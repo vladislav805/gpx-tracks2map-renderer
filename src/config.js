@@ -1,8 +1,11 @@
 module.exports = {
     edges: {
-        N: 60.15090, // north
-        S: 59.7900, // south
-        E: 29.68780, // east
-        W: 30.52277, // west
+        // top left
+        N: 60.15090, // north = lat
+        E: 29.68780, // east = lng
+
+        // right bottom
+        S: 59.7900, // south = lat
+        W: 30.52277, // west = lng
     }
 };
