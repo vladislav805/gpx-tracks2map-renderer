@@ -21,7 +21,11 @@ const writeFile = (path, data) => fs.writeFileSync(path, data, { encoding: 'utf-
  * @returns {object[][]}
  */
 const convertXml2json = path => {
-    const rawXml = openFile(path);
+    let rawXml = openFile(path);
+
+    if (rawXml.charCodeAt(0) === 0xFEFF) {
+        rawXml = rawXml.substring(1);
+    }
 
     const xml = convert(rawXml, { format: 'object' });
 
