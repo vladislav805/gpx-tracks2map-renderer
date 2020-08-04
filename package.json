@@ -1,18 +1,29 @@
 {
   "name": "@vladislav805/gpx-tracks2map-renderer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "main": "src/index.js",
+  "bin": "src/index.js",
   "scripts": {
     "start": "node .",
     "render": "npm start",
-    "purge-cache": "find data -name '*.gpx.json' -delete"
+    "purge-cache": "find data -name '*.gpx.json' -delete",
+    "pack": "pkg ."
   },
   "keywords": [],
   "author": "Vladislav Veluga <vlad@velu.ga> (https://velu.ga/)",
   "license": "ISC",
   "dependencies": {
     "canvas": "2.6.1",
+    "log-symbols": "4.0.0",
+    "ora": "4.0.5",
     "xmlbuilder2": "2.1.5"
+  },
+  "devDependencies": {
+    "pkg": "4.4.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:vladislav805/gpx-tracks2map-renderer.git"
   }
 }

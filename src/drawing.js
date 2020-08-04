@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { write } = require('./terminal');
 const { Canvas, loadImage } = require('canvas');
 const { edges } = require('./config');
 
@@ -26,11 +25,11 @@ const getPositionByLocation = (lat, lng) => {
  *
  * @param {object[][]} tracks
  * @param {object} args
+ * @param {function(status: string): void} onProgress
  */
-module.exports = async({ tracks, args }) => {
+module.exports = async({ tracks, args, onProgress }) => {
     if (!fs.existsSync(args['map-image'])) {
-        console.error(`File with map ${args['map-image']} does not exists`);
-        return;
+        throw new Error(`File with map ${args['map-image']} does not exists`);
     }
 
     const image = await loadImage(args['map-image'])
@@ -48,7 +47,7 @@ module.exports = async({ tracks, args }) => {
 
     let left = tracks.length;
     for (const track of tracks) {
-        write(`Stage 2: drawing tracks... ${--left} left...`);
+        onProgress(`Drawing tracks... [${--left} left]`);
 
         ctx.beginPath();
 
@@ -62,13 +61,15 @@ module.exports = async({ tracks, args }) => {
         ctx.stroke();
     }
 
-    write(`\rStage 3: saving stream...`);
+    onProgress(`Saving stream...`);
 
     const out = fs.createWriteStream(`${args.output}.png`);
 
-    const stream = canvas.createPNGStream();
-    stream.pipe(out);
-    out.on('finish', () => {
-        write(`Successfully saved in ${out.path}\n`);
+    return new Promise(resolve => {
+        const stream = canvas.createPNGStream();
+        stream.pipe(out);
+        out.on('finish', () => {
+            resolve(out.path);
+        });
     });
 };

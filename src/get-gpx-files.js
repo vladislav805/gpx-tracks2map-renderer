@@ -8,11 +8,15 @@ const fs = require('fs');
 const getGpxFilesRecursive = dir => {
     let result = [];
 
+    if (dir.includes('node_modules')) {
+        return result;
+    }
+
     fs.readdirSync(dir).forEach(file => {
         file = `${dir}/${file}`;
         const stat = fs.statSync(file);
 
-        if (stat && stat.isDirectory()) {
+        if (stat && stat.isDirectory() && fs.existsSync(file)) {
             result = result.concat(getGpxFilesRecursive(file))
         } else if (file.endsWith('.gpx')) {
             result.push(file);
