@@ -1,13 +1,13 @@
 const parseArgs = (spec, defaults) => {
-    const args = process.argv.slice(2); // [node, file, ...args]
-
+    const args = process.argv.slice(2); // [node, file, action, ...args]
+    const action = args.shift();
     const result = {};
 
     for (let index = 0; index < args.length; ++index) {
         const val = args[index];
-        const key = val.slice(1);
+        const key = val.slice(2);
 
-        if (val.startsWith('-') && key in spec) {
+        if (val.startsWith('--') && key in spec) {
             const next = args[index + 1];
             if (spec[key] !== 'flag') {
                 if (next) {
@@ -32,7 +32,13 @@ const parseArgs = (spec, defaults) => {
         }
     }
 
-    return { ...defaults, ...result };
+    return {
+        action,
+        args: {
+            ...defaults,
+            ...result,
+        },
+    };
 };
 
 module.exports = parseArgs;

@@ -1,6 +1,5 @@
 const fs = require('fs');
-const getGpxFiles = require('./get-gpx-files');
-const { write } = require('./terminal');
+const path = require('url');
 const { convert } = require('xmlbuilder2');
 
 /**
@@ -39,19 +38,24 @@ const convertXml2json = path => {
     });
 };
 
-
-module.exports = args => {
-    const files = getGpxFiles(process.cwd());
-
+/**
+ *
+ * @param {Record<string, any>} args
+ * @param {string[]} files
+ * @param {function(status: string): void} onParsedFile
+ * @returns {object[][]}
+ */
+const parseGpx = ({ args, files, onParsedFile }) => {
     const tracks = [];
     let left = files.length;
 
     for (const file of files) {
         let result;
 
-        write(`Stage 1: parsing files... ${--left} left`);
+        onParsedFile(`Parsing files... [${--left} left]`);
 
         const fileCache = `${file}.json`;
+
         if (!args['disable-cache'] && fs.existsSync(fileCache)) {
             result = JSON.parse(openFile(fileCache));
         } else {
@@ -64,6 +68,7 @@ module.exports = args => {
 
         tracks.push(result);
     }
-
-    return { tracks, args };
+    return tracks;
 };
+
+module.exports = parseGpx;
