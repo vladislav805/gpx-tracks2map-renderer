@@ -16,8 +16,8 @@
   "dependencies": {
     "canvas": "2.6.1",
     "log-symbols": "4.0.0",
-    "ora": "4.0.5",
-    "xmlbuilder2": "2.1.5"
+    "ora": "5.1.0",
+    "xmlbuilder2": "2.4.0"
   },
   "devDependencies": {
     "pkg": "4.4.9"
