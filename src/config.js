@@ -1,7 +1,7 @@
 module.exports = {
     edges: {
         // top left
-        N: 60.15090, // north = lat
+        N: 60.15150, // north = lat
         E: 29.68780, // east = lng
 
         // right bottom
